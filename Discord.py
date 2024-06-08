@@ -5,16 +5,12 @@ import asyncio
 import datetime
 
 import discord
-from discord import app_commands
-
 
 
 Token = "" # Set this to your Discord Bot's Token
 
 Intents = discord.Intents.default()
 Client = discord.Client(intents=Intents)
-
-Tree = app_commands.CommandTree(Client)
 ##########################################
 
 # These are .txt files that list the user ids, you can find out how to get them here: https://github.com/Icy-Monster/Roblox-Group-Scraper for other groups
@@ -65,7 +61,7 @@ async def FetchStatus(UserIDs: tuple[int], Channel: discord.channel, Emoji: str)
             url="https://www.roblox.com/users/"+ str(User["userId"]) +"/profile",
             )
         await Channel.send(embed=Embed,content=content)
-        
+
 
 
 @Client.event
