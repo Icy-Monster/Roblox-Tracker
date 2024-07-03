@@ -42,6 +42,7 @@ async def FetchStatus(UserIDs: tuple[int], Channel: discord.channel, Emoji: str)
         Playing = User["userPresenceType"] == 2
         UserInfo = await GetUser(UsernameRequest, User["userId"])
 
+        # Make sure to only post users who have not already been posted and are *currently* playing, otherwise remove them
         if not Playing:
             if UserInfo["name"] in Messages:
                 await Messages[UserInfo["name"]].delete()
@@ -52,8 +53,12 @@ async def FetchStatus(UserIDs: tuple[int], Channel: discord.channel, Emoji: str)
 
         Description = "**[Join](https://www.roblox.com/games/start?placeId=16302670534&launchData=" + str(User["placeId"]) + "/" + User["gameId"] + ") them in ["+ User["lastLocation"] +"](https://www.roblox.com/games/"+ str(User["placeId"]) +")**"
 
-        Title = "** "+ Emoji +" "+ UserInfo["displayName"] +" (@"+ UserInfo["name"] +")**"
-
+        # The Title is DisplayName (@username) or only @username if they're the same
+        if UserInfo["displayName"] == UserInfo["name"]:
+            Title = "** "+ Emoji +" @"+ UserInfo["name"] +"**"
+        else:
+            Title = "** "+ Emoji +" "+ UserInfo["displayName"] +" (@"+ UserInfo["name"] +")**"
+        
         Embed = discord.Embed(
             title=Title,
             description=Description,
