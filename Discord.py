@@ -6,7 +6,7 @@ import datetime
 
 import discord
 
-
+# TODO: Check if the place is private, most likely requires an extra api call
 
 Token = "" # Set this to your Discord Bot's Token
 
@@ -54,10 +54,9 @@ async def FetchStatus(UserIDs: tuple[int], Channel: discord.channel, Emoji: str)
         Description = "**[Join](https://www.roblox.com/games/start?placeId=16302670534&launchData=" + str(User["placeId"]) + "/" + User["gameId"] + ") them in ["+ User["lastLocation"] +"](https://www.roblox.com/games/"+ str(User["placeId"]) +")**"
 
         # The Title is DisplayName (@username) or only @username if they're the same
-        if UserInfo["displayName"] == UserInfo["name"]:
-            Title = "** "+ Emoji +" @"+ UserInfo["name"] +"**"
-        else:
-            Title = "** "+ Emoji +" "+ UserInfo["displayName"] +" (@"+ UserInfo["name"] +")**"
+        Title = "** "+ Emoji +" @"+ UserInfo["displayName"] +"**"
+        if UserInfo["displayName"] != UserInfo["name"]:
+            Title += " (@"+ UserInfo["name"] +")**"
         
         Embed = discord.Embed(
             title=Title,
