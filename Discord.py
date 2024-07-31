@@ -34,8 +34,11 @@ async def FetchStatus(UserIDs: tuple[int], Channel: discord.channel, Emoji: str)
     }
 
     StatusRequest = requests.post('https://presence.roblox.com/v1/presence/users', headers=headers, data=json.dumps({"userIds": UserIDs}))
+    if StatusRequest.status_code != 200: return
 
     UsernameRequest = requests.post('https://users.roblox.com/v1/users', headers=headers, data=json.dumps({"userIds": UserIDs}))
+    if UsernameRequest.status_code != 200: return
+
     UsernameRequest = json.loads(UsernameRequest.content.decode('utf-8'))["data"]
 
     for User in json.loads(StatusRequest.content.decode('utf-8'))["userPresences"]:
